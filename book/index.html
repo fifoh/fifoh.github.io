@@ -15,26 +15,30 @@
     }
 
     canvas {
-      display: block; /* Remove inline-block space below canvas */
-      position: absolute; /* Position the canvas absolutely */
+      display: block;
+      position: absolute; /* Ensure the canvas is positioned absolutely */
       top: 0;
       left: 0;
     }
 
-    .slider-wrapper {
-      width: 200px; /* Adjust this width to make the slider shorter */
-      margin-top: 20px; /* Adjust margin top as needed */
-      position: fixed; /* Keep it fixed in the viewport */
-      top: 20px; /* Adjust vertical position */
-      left: 20px; /* Adjust horizontal position */
-      z-index: 100; /* Ensure it stays above the canvas */
+    .slider-wrapper, .button-wrapper {
+      position: fixed; /* Fixed positioning for mobile and desktop */
+      z-index: 100; /* Ensure the elements stay on top */
+      padding: 10px;
+      background-color: white; /* Optional: Background color for visibility */
     }
 
-    .button-wrapper {
-      position: fixed; /* Keep it fixed in the viewport */
-      top: 60px; /* Adjust vertical position */
-      left: 20px; /* Adjust horizontal position */
-      z-index: 100; /* Ensure it stays above the canvas */
+    /* Adjust for mobile if needed */
+    @media (max-width: 768px) {
+      .slider-wrapper {
+        top: 10px; /* Adjust vertical position for mobile */
+        left: 10px; /* Adjust horizontal position for mobile */
+      }
+
+      .button-wrapper {
+        top: 60px; /* Adjust vertical position for mobile */
+        left: 10px; /* Adjust horizontal position for mobile */
+      }
     }
   </style>
 </head>
