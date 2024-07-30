@@ -17,6 +17,8 @@ let ellipseColors = [
 
 let lastState = '';
 
+let helpButton;
+let helpDiv;
 
 let randomButton;
 
@@ -438,6 +440,11 @@ function setup() {
   metroImage = createImg("images/metro_icon.jpg", "tempo");
   metroImage.size(45, 45);
   metroImage.position(10 + playButton.width, 30);
+  
+  helpButton = createImg('images/help_icon.jpg', '?');
+  helpButton.size(45,45);
+  helpButton.position(5, windowHeight - 75);
+  helpButton.touchStarted(popupHelp);   
 
   durationSlider = createSlider(100, 1000, 550);
   durationSlider.position(10 + playButton.width + metroImage.width, 40);
@@ -893,5 +900,57 @@ function createRandomPoints(numPoints) {
     }
 
     points[i][j] = true;
+  }
+}
+
+function popupHelp() {
+  // Check if the helpDiv already exists, if so, remove it
+  if (helpDiv) {
+    helpDiv.remove();
+  }
+
+  // Create a div for the help popup
+  helpDiv = createDiv();
+  helpDiv.position(50, 50);
+  helpDiv.style('background-color', '#f9f9f9');
+  helpDiv.style('border', '1px solid #000');
+  helpDiv.style('padding', '10px');
+  helpDiv.style('z-index', '10');
+  helpDiv.style('max-width', '80%'); // Optional, to limit the width
+  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
+
+  // Add content to the help popup
+  helpDiv.html(`
+    <div style="position: relative; padding: 10px;">
+      <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
+        <li>• Click to create a point</li>
+        <li>• Click an existing point to delete it</li>
+        <li>• Press + and - to add or remove rings</li>
+        <li>• Press ▶ to play your piece</li>
+        <li>• Press the bin icon to reset</li>
+        <li>• Change instrument with the menu or click the coloured circles</li>
+        <li>• Change scales using the menu</li>
+        <li>• Change tempo using the slider</li>
+        <li>• Randomise with the dice icon</li>
+        <li id="closeHelp" style="cursor: pointer; color: #007bff; text-decoration: underline;">close help</li>
+      </ul>
+    </div>
+  `);
+
+
+  // Prevent event propagation to the canvas
+  helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
+
+  // Create a close button inside the help popup
+  let closeButton = select('#closeHelp');
+  closeButton.mousePressed(closeHelp);
+}
+
+function closeHelp() {
+  // Remove the help popup when the close button is pressed
+  if (helpDiv) {
+    helpDiv.remove();
   }
 }
