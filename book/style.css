@@ -8,3 +8,10 @@ body {
 canvas {
   display: block;
 }
+
+#button-container {
+  position: fixed; /* Ensure this container is fixed */
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+}
