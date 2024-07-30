@@ -470,39 +470,41 @@ function setup() {
   
   initializeGridArray();
   playButton = createImg('images/play_icon.jpg', '▶');
-  playButton.size(45, 45); 
-  playButton.position(-10, -55);
+  playButton.size(45, 45);
   playButton.touchStarted(() => toggleAnimation(totalAnimationTime));
   playButton.parent('button-container');
+  
+  playButton.style('position', 'fixed');
+  playButton.style('top', '20px');
+  playButton.style('left', '20px');
 
   stopButton = createImg('images/stop_icon.jpg', '▶');
   stopButton.size(45, 45); 
-  stopButton.position(-10, -55);
   stopButton.touchStarted(stopAnimation).hide();
   stopButton.parent('button-container');
+  
+  stopButton.style('position', 'fixed');
+  stopButton.style('top', '20px');
+  stopButton.style('left', '20px');  
 
   clearButton = createImg('images/bin_icon.jpg', '✖');
   clearButton.size(45, 45);
   clearButton.touchStarted(clearGrid);
-  clearButton.position(windowWidth - 65, -55); 
   clearButton.parent('button-container');
   
   helpButton = createImg('images/help_icon.jpg', '?');
   helpButton.size(45,45);
-  positionhelpButton();     
   helpButton.touchStarted(popupHelp); 
   helpButton.parent('button-container');
   
   metroImage = createImg('images/metro_icon.jpg', 'tempo');
   metroImage.size(45, 45);
-  metroImage.position(45, -55);
   metroImage.parent('button-container');
   
   randomButton = createImg("images/random_button.jpg", "R")
   randomButton.size(45, 45);
   randomButton.touchStarted(randomiseEverything);
   randomButton.parent('button-container');
-  positionrandomButton();      
   
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
@@ -518,21 +520,17 @@ function setup() {
   scalesDropdown.option('Whole Tone');
   scalesDropdown.option('Octatonic');
   scalesDropdown.parent('button-container');
-  scalesDropdown.position(windowWidth/2, windowHeight - 110);
 
   scalesDropdown.changed(changeScale);
   instrumentDropdown = createSelect();
   instrumentDropdown.option('Select an Instrument:', '');
   instrumentDropdown.option('organ');
   instrumentDropdown.option('percussion');
-  instrumentDropdown.position(10, windowHeight - 110);
   instrumentDropdown.parent('button-container');
   instrumentDropdown.changed(changeInstrument);  
 
   let sliderWrapper = select('.slider-wrapper');
   speedSlider = createSlider(40, 240, 100, 1);
-  speedSlider.position(45 + metroImage.width, -21);
-  speedSliderPosition = 45 + metroImage.width;
   speedSlider.parent(sliderWrapper);
   speedSlider.style('width', '60px');
   speedSliderWidth = speedSlider.width;
@@ -544,7 +542,6 @@ function setup() {
   updateSpeed();
   addButton = createImg('images/add_row.jpg', '+');
   addButton.size(45, 45);
-  addButton.position(windowWidth - 65 - addButton.width, -55);
   addButton.parent('button-container');
 
   addButton.touchStarted(() => {
@@ -558,7 +555,6 @@ function setup() {
   removeButton = createImg('images/minus_row.jpg', '-');
   removeButton.size(45, 45);
   removeButton.parent('button-container');
-  removeButton.position(windowWidth - 65 - removeButton.width - addButton.width, -55);
 
   removeButton.touchStarted(() => {
     if (rows > 5) {
@@ -849,15 +845,6 @@ function updateIndividualInstrumentArray(indexToUpdate) {
       gridChanged = true;
     }
   }, 50); // debounce
-}
-
-
-function positionrandomButton() {
-  randomButton.position(windowWidth - 65, -57 + randomButton.height);
-}
-
-function positionhelpButton() {
-  helpButton.position(windowWidth - 65 - helpButton.width, -57 + helpButton.height);
 }
 
 function randomiseEverything() {
