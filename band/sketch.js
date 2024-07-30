@@ -1,5 +1,12 @@
+// to do:
+// work on the 'help' button popup
+// test this embedded - does it work?
+// does it work on different mobiles?
+
 p5.disableFriendlyErrors = true;
 let addButton, removeButton;
+let helpButton;
+let helpDiv;
 
 let touchMovedOccurred = false;
 let previousTouchY;
@@ -383,14 +390,19 @@ function setup() {
     
   clearButton = createImg('images/bin_icon.jpg', '✖');
   clearButton.size(45, 45);
-  clearButton.mousePressed(clearNotes);
+  clearButton.touchStarted(clearNotes);
   clearButton.position(windowWidth-50, 30);
 
   // Create the play/stop button
   playStopButton = createImg('images/play_icon.jpg', '▶');
   playStopButton.size(45, 45); 
   playStopButton.position(10, 30); 
-  playStopButton.mousePressed(togglePlayStop);
+  playStopButton.touchStarted(togglePlayStop);
+  
+  helpButton = createImg('images/help_icon.jpg', '?');
+  helpButton.size(45,45);
+  helpButton.position(5, windowHeight - 75);
+  helpButton.touchStarted(popupHelp);  
 
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
@@ -419,7 +431,7 @@ function setup() {
   let addButton = createImg('images/plus_band.jpg', '+');
   addButton.size(45, 45);
   addButton.position(windowWidth - 55 - addButton.width, 30);
-  addButton.mousePressed(() => {
+  addButton.touchStarted(() => {
     if (numEllipses < 15) {
     numEllipses++;
     initializePointsArray();
@@ -429,7 +441,7 @@ function setup() {
   let removeButton = createImg('images/minus_band.jpg', '-');
   removeButton.size(45, 45);
   removeButton.position(windowWidth - 60- removeButton.width - addButton.width, 30);
-  removeButton.mousePressed(() => {
+  removeButton.touchStarted(() => {
     if (numEllipses > 5) {
       numEllipses--;
       initializePointsArray();
@@ -725,7 +737,7 @@ function touchEnded() {
   }
 }
 
-function touchStarted() {
+function touchStarted() { 
   touchX = touches[0].x;
   touchY = touches[0].y;
   
@@ -946,4 +958,56 @@ function angleDifference(angle1, angle2) {
 
 function noScroll() {
   document.body.style.overflow = 'hidden';
+}
+
+function popupHelp() {
+  // Check if the helpDiv already exists, if so, remove it
+  if (helpDiv) {
+    helpDiv.remove();
+  }
+
+  // Create a div for the help popup
+  helpDiv = createDiv();
+  helpDiv.position(50, 50);
+  helpDiv.style('background-color', '#f9f9f9');
+  helpDiv.style('border', '1px solid #000');
+  helpDiv.style('padding', '10px');
+  helpDiv.style('z-index', '10');
+  helpDiv.style('max-width', '90%'); // Optional, to limit the width
+  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
+
+  // Add content to the help popup
+  helpDiv.html(`
+    <div style="position: relative; padding: 10px;">
+      <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
+        <li>• Click to create a point</li>
+        <li>• Click an existing point to delete it</li>
+        <li>• Press + and - to add or remove space</li>
+        <li>• Press ▶ to play your piece</li>
+        <li>• Press the bin icon to reset</li>
+        <li>• Change instrument with the menu or click the coloured pins</li>
+        <li>• Change scales using the menu</li>
+        <li>• Change tempo using the slider</li>
+        <li>• Randomise with the dice icon</li>
+        <li id="closeHelp" style="cursor: pointer; color: #007bff; text-decoration: underline;">close help</li>
+      </ul>
+    </div>
+  `);
+
+
+  // Prevent event propagation to the canvas
+  helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
+
+  // Create a close button inside the help popup
+  let closeButton = select('#closeHelp');
+  closeButton.mousePressed(closeHelp);
+}
+
+function closeHelp() {
+  // Remove the help popup when the close button is pressed
+  if (helpDiv) {
+    helpDiv.remove();
+  }
 }
