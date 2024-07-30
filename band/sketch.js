@@ -973,7 +973,7 @@ function popupHelp() {
   helpDiv.style('border', '1px solid #000');
   helpDiv.style('padding', '10px');
   helpDiv.style('z-index', '10');
-  helpDiv.style('max-width', '90%'); // Optional, to limit the width
+  helpDiv.style('max-width', '80%'); // Optional, to limit the width
   helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
 
   // Add content to the help popup
