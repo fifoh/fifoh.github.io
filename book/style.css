@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Disable vertical scrolling */
+  width: 100vw; /* Ensure body takes full viewport width */
+  height: 100vh; /* Ensure body takes full viewport height */
+}
+canvas {
+  display: block;
+}
