@@ -2,16 +2,33 @@ body {
   margin: 0;
   overflow-x: auto; /* Enable horizontal scrolling */
   overflow-y: hidden; /* Disable vertical scrolling */
-  width: 100vw; /* Ensure body takes full viewport width */
-  height: 100vh; /* Ensure body takes full viewport height */
-}
-canvas {
-  display: block;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 
-#button-container {
-  position: fixed; /* Ensure this container is fixed */
-  top: 10px;
-  left: 10px;
-  z-index: 100;
+canvas {
+  display: block;
+  position: absolute; /* Ensure the canvas is positioned absolutely */
+  top: 0;
+  left: 0;
+}
+
+.slider-wrapper, .button-wrapper {
+  position: fixed; /* Fixed positioning for mobile and desktop */
+  z-index: 100; /* Ensure the elements stay on top */
+  padding: 10px;
+  background-color: white; /* Optional: Background color for visibility */
+}
+
+@media (max-width: 768px) {
+  .slider-wrapper {
+    top: 10px; /* Adjust vertical position for mobile */
+    left: 10px; /* Adjust horizontal position for mobile */
+  }
+
+  .button-wrapper {
+    top: 60px; /* Adjust vertical position for mobile */
+    left: 10px; /* Adjust horizontal position for mobile */
+  }
 }
