@@ -1,7 +1,12 @@
 p5.disableFriendlyErrors = true;
 let addButton, removeButton;
 
+let touchMovedOccurred = false;
+let previousTouchY;
+let touchX, touchY;
 let lastState = '';
+
+let angle = 0;
 
 let loadedInstrumentSetBuffers = {};
 let individualInstrumentArray = new Array(37).fill(1);
@@ -363,6 +368,8 @@ let textureY = 0;
 
 function setup() {
   
+  noScroll();
+  
   // Suspend the AudioContext
   audioContext.suspend().then(() => {
     console.log('AudioContext suspended in setup:', audioContext.state);
@@ -570,12 +577,38 @@ function draw() {
       if (angle >= PI + PI / 2 && angle < PI + PI / 2 + speedSlider.value()) {
         let bufferIndex = scaleMappings[i];
         playSound(audioBuffers[bufferIndex]);
-        flashBar(i);
+        if (!touchMovedOccurred) {
+          flashBar(i);
+        }
+        
+        
       }
 
       if (isPlaying) {
         band_point.angle += speedSlider.value();
         band_point.angle %= TWO_PI;
+      }
+      
+      if (touchMovedOccurred) {
+        let deltaY = touchY - previousTouchY;
+        
+        if (deltaY > 0) {
+          band_point.angle += 0.03;
+          band_point.angle = ((band_point.angle % TWO_PI) + TWO_PI) % TWO_PI;
+          
+          textureY -= 0.03 * 140;
+          if (textureY <= -textureBuffer.height) {
+            textureY += textureBuffer.height;
+          }          
+        }
+        if (deltaY < 0) {
+          band_point.angle -=0.03;
+          band_point.angle = ((band_point.angle % TWO_PI) + TWO_PI) % TWO_PI;
+          textureY += 0.03 * 140;
+          if (textureY <= -textureBuffer.height) {
+            textureY += textureBuffer.height;
+          }                
+        }
       }
     }
   }
@@ -592,30 +625,76 @@ function togglePlayStop() {
   }
 }
 
-function mousePressed() {
+function touchMoved() {
   if (preventNoteCreation) return;
+  if (isPlaying) return;
   
+  // Get the current touch position
+  let currentTouchY = touches[0].y;
+  let currentTouchX = touches[0].x;
+  
+  let rectX = windowWidth * 0.05;
+  let rectY = windowHeight * 0.36;
+  let rectWidth = windowWidth * 0.89;
+  let rectHeight = windowHeight * 0.476;    
+  
+  if (currentTouchX >= rectX && currentTouchX <= rectX + rectWidth &&
+      currentTouchY >= rectY && currentTouchY <= rectY + rectHeight) {  
+    touchMovedOccurred = true;
+    
+    // Calculate the change in the Y position
+    if (previousTouchY !== undefined) {
+      let deltaY = currentTouchY - previousTouchY;
+    }
+
+    // Update previous touch position
+    previousTouchY = currentTouchY;
+    return false;
+  }
+  
+  return true;
+}
+
+function touchEnded() {
+  if (touchMovedOccurred) {
+    touchMovedOccurred = false; // Reset the flag for the next touch event.
+    return;
+  }
+
+  if (audioContext.state !== 'running') {
+    userStartAudio().then(() => {
+      audioContext.resume().then(() => {
+        console.log('AudioContext resumed on touchEnded:', audioContext.state);
+      }).catch((err) => {
+        console.error('Error resuming AudioContext:', err);
+      });
+    }).catch((err) => {
+      console.error('Error starting user audio:', err);
+    });
+  }
+
+  if (preventNoteCreation) return;
+
   let buttonClicked = false;
 
   for (let btn of ellipseButtons) {
-    let d = dist(mouseX, mouseY, btn.x, btn.y);
-    if (d < btn.size / 2) {
+    let d = dist(touchX, touchY, btn.x, btn.y);
+    if (d < btn.size / 1.8) {
       updateIndividualInstrumentArray(btn.id);
       buttonClicked = true;
     }
-  }  
-  clickProximityX = windowWidth*0.4 / numEllipses // Min distance between points
+  }
+
+  clickProximityX = windowWidth * 0.25 / numEllipses;
   for (let i = 0; i < ellipses.length; i++) {
     let ellipseData = ellipses[i];
-    let dXLeft = abs(mouseX - (ellipseData.centerX - clickProximityX));
-    let dXRight = abs(mouseX - (ellipseData.centerX + clickProximityX));
-    let dY = abs(mouseY - centerY);
+    let dXLeft = abs(touchX - (ellipseData.centerX - clickProximityX));
+    let dXRight = abs(touchX - (ellipseData.centerX + clickProximityX));
+    let dY = abs(touchY - centerY);
 
     if ((dXLeft <= clickProximityX || dXRight <= clickProximityX) && dY <= clickProximityY) {
-      let newAngle = asin((mouseY - centerY) / (ellipseHeight / 2));
-
+      let newAngle = asin((touchY - centerY) / (ellipseHeight / 2));
       newAngle = PI - newAngle;
-
       let canAdd = true;
       for (let band_point of ellipseData.points) {
         let distance = abs(newAngle - band_point.angle);
@@ -638,7 +717,7 @@ function mousePressed() {
       let pointX = ellipseData.centerX + ellipseWidth / 2 * Math.cos(angle);
       let pointY = centerY + ellipseHeight / 2 * Math.sin(angle);
 
-      if (dist(mouseX, mouseY, pointX, pointY) <= pointSize / 2) {
+      if (dist(touchX, touchY, pointX, pointY) <= pointSize / 2) {
         ellipseData.points.splice(j, 1);
         break;
       }
@@ -647,86 +726,23 @@ function mousePressed() {
 }
 
 function touchStarted() {
+  touchX = touches[0].x;
+  touchY = touches[0].y;
   
-  if (audioContext.state !== 'running') {
-    userStartAudio().then(() => {
-      audioContext.resume().then(() => {
-        console.log('AudioContext resumed on mousePressed:', audioContext.state);
-      }).catch((err) => {
-        console.error('Error resuming AudioContext:', err);
-      });
-    }).catch((err) => {
-      console.error('Error starting user audio:', err);
-    });
-  }
-  
-  if (preventNoteCreation) return;
-  if (touches.length > 0) {
-    let touchX = touches[0].x;
-    let touchY = touches[0].y;
-  
-    let buttonClicked = false;
-
-    for (let btn of ellipseButtons) {
-      let d = dist(touchX, touchY, btn.x, btn.y);
-      if (d < btn.size / 1.8) {
-        updateIndividualInstrumentArray(btn.id);
-        buttonClicked = true;
-      }
-    }      
-
-    clickProximityX = windowWidth*0.25 / numEllipses
-    for (let i = 0; i < ellipses.length; i++) {
-      let ellipseData = ellipses[i];
-      let dXLeft = abs(touchX - (ellipseData.centerX - clickProximityX));
-      let dXRight = abs(touchX - (ellipseData.centerX + clickProximityX));
-      let dY = abs(touchY - centerY);
-
-      if ((dXLeft <= clickProximityX || dXRight <= clickProximityX) && dY <= clickProximityY) {
-        let newAngle = asin((touchY - centerY) / (ellipseHeight / 2));
-        newAngle = PI - newAngle;
-        let canAdd = true;
-        for (let band_point of ellipseData.points) {
-          let distance = abs(newAngle - band_point.angle);
-          if (distance < minDistance * (PI / 180)) {
-            canAdd = false;
-            break;
-          }
-        }
-
-        if (canAdd) {
-          ellipseData.points.push({ angle: newAngle });
-          break;
-        }
-      }
-
-      for (let j = ellipseData.points.length - 1; j >= 0; j--) {
-        let band_point = ellipseData.points[j];
-        let { angle } = band_point;
-
-        let pointX = ellipseData.centerX + ellipseWidth / 2 * Math.cos(angle);
-        let pointY = centerY + ellipseHeight / 2 * Math.sin(angle);
-
-        if (dist(touchX, touchY, pointX, pointY) <= pointSize / 2) {
-          ellipseData.points.splice(j, 1);
-          break;
-        }
-      }
-    }
-  }
+  return true;
 }
 
-
 function playSound(buffer) {
-  if (!isPlaying) return;
+  if (isPlaying) {
 
-  let source = audioContext.createBufferSource();
-  source.buffer = buffer;
-  let gainNode = audioContext.createGain();
-  gainNode.gain.value = 0.2;
-  source.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-  source.start(0);
+    let source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    let gainNode = audioContext.createGain();
+    gainNode.gain.value = 0.2;
+    source.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    source.start(0);
+  }
 }
 
 function flashBar(barIndex) {
@@ -857,7 +873,7 @@ function randomiseEverything() {
     // start with number of notes
     numEllipses = int(random(10)) + 5;
 
-    randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
+    randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
     scalesDropdown.selected(randomScale);
     changeScale();  
 
@@ -926,4 +942,8 @@ function angleDifference(angle1, angle2) {
   let diff = angle1 - angle2;
   diff = ((diff + Math.PI) % (2 * Math.PI)) - Math.PI;
   return abs(diff);
+}
+
+function noScroll() {
+  document.body.style.overflow = 'hidden';
 }
