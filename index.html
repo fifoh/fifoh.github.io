@@ -8,21 +8,49 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      text-align: center;
     }
     .sketch-link {
-      display: block;
-      margin: 10px 0;
+      display: inline-block;
+      margin: 20px;
+      text-align: center;
+    }
+    .sketch-link img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+    .sketch-link img:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
   <h1>My p5.js Sketches</h1>
-  <ul>
-    <li class="sketch-link"><a href="band/index.html">band</a></li>
-    <li class="sketch-link"><a href="book/index.html">book</a></li>
-    <li class="sketch-link"><a href="disc/index.html">disc</a></li>
-    <li class="sketch-link"><a href="cylinder/index.html">cylinder</a></li>
-    <li class="sketch-link"><a href="wheels/index.html">wheels</a></li>
-  </ul>
+  <div>
+    <a href="band/index.html" class="sketch-link">
+      <img src="images/band.png" alt="band">
+      <div>band</div>
+    </a>
+    <a href="book/index.html" class="sketch-link">
+      <img src="images/book.png" alt="book">
+      <div>book</div>
+    </a>
+    <a href="disc/index.html" class="sketch-link">
+      <img src="images/disc.png" alt="disc">
+      <div>disc</div>
+    </a>
+    <a href="cylinder/index.html" class="sketch-link">
+      <img src="images/cylinder.png" alt="cylinder">
+      <div>cylinder</div>
+    </a>
+    <a href="wheels/index.html" class="sketch-link">
+      <img src="images/wheels.png" alt="wheels">
+      <div>wheels</div>
+    </a>
+  </div>
 </body>
 </html>
