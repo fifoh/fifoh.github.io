@@ -11,6 +11,9 @@ let ellipseColors = [
   [0,0,0]    // Black for percussion
 ];
 
+let helpButton;
+let helpDiv;
+
 let loadedInstrumentSetBuffers = {};
 let individualInstrumentArray = new Array(37).fill(1);
 let initialBPM_value;
@@ -468,26 +471,37 @@ function setup() {
   initializeGridArray();
   playButton = createImg('images/play_icon.jpg', '▶');
   playButton.size(45, 45); 
-  playButton.position(10, 10);
+  playButton.position(-10, -55);
   playButton.touchStarted(() => toggleAnimation(totalAnimationTime));
+  playButton.parent('button-container');
 
   stopButton = createImg('images/stop_icon.jpg', '▶');
   stopButton.size(45, 45); 
-  stopButton.position(10, 10);
+  stopButton.position(-10, -55);
   stopButton.touchStarted(stopAnimation).hide();
+  stopButton.parent('button-container');
 
   clearButton = createImg('images/bin_icon.jpg', '✖');
   clearButton.size(45, 45);
   clearButton.touchStarted(clearGrid);
-  clearButton.position(windowWidth - 50, 10);  
+  clearButton.position(windowWidth - 65, -55); 
+  clearButton.parent('button-container');
+  
+  helpButton = createImg('images/help_icon.jpg', '?');
+  helpButton.size(45,45);
+  positionhelpButton();     
+  helpButton.touchStarted(popupHelp); 
+  helpButton.parent('button-container');
   
   metroImage = createImg('images/metro_icon.jpg', 'tempo');
   metroImage.size(45, 45);
-  metroImage.position(65, 10);  
+  metroImage.position(45, -55);
+  metroImage.parent('button-container');
   
   randomButton = createImg("images/random_button.jpg", "R")
   randomButton.size(45, 45);
   randomButton.touchStarted(randomiseEverything);
+  randomButton.parent('button-container');
   positionrandomButton();      
   
   scalesDropdown = createSelect();
@@ -503,20 +517,22 @@ function setup() {
   scalesDropdown.option('Harmonic Minor');
   scalesDropdown.option('Whole Tone');
   scalesDropdown.option('Octatonic');
-  scalesDropdown.position(windowWidth/2, windowHeight - 25);
+  scalesDropdown.parent('button-container');
+  scalesDropdown.position(windowWidth/2, windowHeight - 110);
 
   scalesDropdown.changed(changeScale);
   instrumentDropdown = createSelect();
   instrumentDropdown.option('Select an Instrument:', '');
   instrumentDropdown.option('organ');
   instrumentDropdown.option('percussion');
-  instrumentDropdown.position(10, windowHeight - 25);
+  instrumentDropdown.position(10, windowHeight - 110);
+  instrumentDropdown.parent('button-container');
   instrumentDropdown.changed(changeInstrument);  
 
   let sliderWrapper = select('.slider-wrapper');
   speedSlider = createSlider(40, 240, 100, 1);
-  speedSlider.position(65 + metroImage.width, 20);
-  speedSliderPosition = 65 + metroImage.width;
+  speedSlider.position(45 + metroImage.width, -21);
+  speedSliderPosition = 45 + metroImage.width;
   speedSlider.parent(sliderWrapper);
   speedSlider.style('width', '60px');
   speedSliderWidth = speedSlider.width;
@@ -528,7 +544,8 @@ function setup() {
   updateSpeed();
   addButton = createImg('images/add_row.jpg', '+');
   addButton.size(45, 45);
-  addButton.position(windowWidth - 55 - addButton.width, 10);
+  addButton.position(windowWidth - 65 - addButton.width, -55);
+  addButton.parent('button-container');
 
   addButton.touchStarted(() => {
     if (rows < 15) {
@@ -540,7 +557,8 @@ function setup() {
 
   removeButton = createImg('images/minus_row.jpg', '-');
   removeButton.size(45, 45);
-  removeButton.position(windowWidth - 60 - removeButton.width - addButton.width, 10);
+  removeButton.parent('button-container');
+  removeButton.position(windowWidth - 65 - removeButton.width - addButton.width, -55);
 
   removeButton.touchStarted(() => {
     if (rows > 5) {
@@ -605,7 +623,7 @@ function draw() {
       }
     }
     for (let i = 0; i < rows; i++) {
-      let buttonSize = cellHeight * 0.5;
+      let buttonSize = cellHeight * 0.4;
       let buttonX = -30;
       let buttonY = (rows - 1 - i) * (cellHeight + 5) + cellHeight / 2;
       ellipseButtons.push({ id: i, x: buttonX, y: buttonY, size: buttonSize });
@@ -635,7 +653,9 @@ function draw() {
     // BPM
     noStroke();
     fill(0);
-    text("♩ = " + speedSlider.value(), speedSliderPosition + speedSliderWidth * 1.2, 13);
+    
+    // optional tempo markings
+    // text("♩ = " + speedSlider.value(), speedSliderPosition + speedSliderWidth * 1.2, 13);
 
     if (animate) {
       let elapsedTime = millis() - animationStartTime;
@@ -833,7 +853,11 @@ function updateIndividualInstrumentArray(indexToUpdate) {
 
 
 function positionrandomButton() {
-  randomButton.position(windowWidth - 50, 60);
+  randomButton.position(windowWidth - 65, -57 + randomButton.height);
+}
+
+function positionhelpButton() {
+  helpButton.position(windowWidth - 65 - helpButton.width, -57 + helpButton.height);
 }
 
 function randomiseEverything() {
@@ -971,5 +995,57 @@ function generatePercussionPart() {
     if (row <= 4) {
       grid[row][col] = true;
     }
+  }
+}
+
+function popupHelp() {
+  // Check if the helpDiv already exists, if so, remove it
+  if (helpDiv) {
+    helpDiv.remove();
+  }
+
+  // Create a div for the help popup
+  helpDiv = createDiv();
+  helpDiv.position(50, 50);
+  helpDiv.style('background-color', '#f9f9f9');
+  helpDiv.style('border', '1px solid #000');
+  helpDiv.style('padding', '10px');
+  helpDiv.style('z-index', '10');
+  helpDiv.style('max-width', '80%'); // Optional, to limit the width
+  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
+
+  // Add content to the help popup
+  helpDiv.html(`
+    <div style="position: relative; padding: 10px;">
+      <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
+        <li>• Click to create a note</li>
+        <li>• Click an existing note to delete it</li>
+        <li>• Press + and - to add or remove rows</li>
+        <li>• Press ▶ to play your piece</li>
+        <li>• Press the bin icon to reset</li>
+        <li>• Change between organ and percussion using the menu or click the coloured pins</li>
+        <li>• Change scales using the menu</li>
+        <li>• Change tempo using the slider</li>
+        <li>• Randomise with the dice icon</li>
+        <li id="closeHelp" style="cursor: pointer; color: #007bff; text-decoration: underline;">close help</li>
+      </ul>
+    </div>
+  `);
+
+
+  // Prevent event propagation to the canvas
+  helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
+  helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
+
+  // Create a close button inside the help popup
+  let closeButton = select('#closeHelp');
+  closeButton.mousePressed(closeHelp);
+}
+
+function closeHelp() {
+  // Remove the help popup when the close button is pressed
+  if (helpDiv) {
+    helpDiv.remove();
   }
 }
