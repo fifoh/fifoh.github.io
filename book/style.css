@@ -30,6 +30,7 @@ canvas {
   justify-content: flex-start; /* Align buttons to the left */
   gap: 5px; /* No gap between buttons */
   padding: 10px;
+  background-color: #FAFAFA;
 }
 
 #button-container {
