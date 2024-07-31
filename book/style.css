@@ -16,27 +16,19 @@ canvas {
 
 .slider-wrapper, .button-wrapper {
   position: fixed; /* Fixed positioning for mobile and desktop */
-  z-index: 100; /* Ensure the elements stay on top */
+  z-index: 1000; /* Ensure the elements stay on top */
   padding: 10px;
   background-color: white; /* Optional: Background color for visibility */
   -webkit-backface-visibility: hidden; /* Fix for mobile browsers */
+  transform: translate(0, 0); /* Positioning using transform */
 }
 
 @media (max-width: 768px) {
   .slider-wrapper {
-    top: 10px; /* Adjust vertical position for mobile */
-    left: 10px; /* Adjust horizontal position for mobile */
+    transform: translate(10px, 10px); /* Adjust position for mobile */
   }
 
   .button-wrapper {
-    top: 60px; /* Adjust vertical position for mobile */
-    left: 10px; /* Adjust horizontal position for mobile */
+    transform: translate(10px, 60px); /* Adjust position for mobile */
   }
-}
-
-.fixed-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  -webkit-backface-visibility: hidden; /* Fix for mobile browsers */
 }
