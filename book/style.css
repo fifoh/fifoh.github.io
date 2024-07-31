@@ -23,12 +23,38 @@ canvas {
   transform: translate(0, 0); /* Positioning using transform */
 }
 
+#button-container, #button-container-bottom {
+  left: 0;
+  width: 100%; /* Full width for buttons */
+  display: flex;
+  justify-content: flex-start; /* Align buttons to the left */
+  gap: 5px; /* No gap between buttons */
+  padding: 10px;
+}
+
+#button-container {
+  top: 0;
+}
+
+#button-container-bottom {
+  bottom: 0;
+}
+
+#button-container img, #button-container-bottom img {
+  margin: 0; /* Ensure no margin between buttons */
+  padding: 0; /* Ensure no padding between buttons */
+}
+
 @media (max-width: 768px) {
   .slider-wrapper {
-    transform: translate(10px, 10px); /* Adjust position for mobile */
+    transform: translate(0px, 0px); /* Adjust position for mobile */
   }
 
-  .button-wrapper {
-    transform: translate(10px, 60px); /* Adjust position for mobile */
+  #button-container {
+    transform: translate(0px, 0px); /* Adjust position for mobile */
+  }
+  
+  #button-container-bottom {
+    transform: translate(0px, 0px); /* Adjust position for mobile */
   }
 }

@@ -473,19 +473,11 @@ function setup() {
   playButton.size(45, 45);
   playButton.touchStarted(() => toggleAnimation(totalAnimationTime));
   playButton.parent('button-container');
-  
-  playButton.style('position', 'fixed');
-  playButton.style('top', '20px');
-  playButton.style('left', '20px');
 
   stopButton = createImg('images/stop_icon.jpg', '▶');
   stopButton.size(45, 45); 
   stopButton.touchStarted(stopAnimation).hide();
   stopButton.parent('button-container');
-  
-  stopButton.style('position', 'fixed');
-  stopButton.style('top', '20px');
-  stopButton.style('left', '20px');  
 
   clearButton = createImg('images/bin_icon.jpg', '✖');
   clearButton.size(45, 45);
@@ -495,16 +487,16 @@ function setup() {
   helpButton = createImg('images/help_icon.jpg', '?');
   helpButton.size(45,45);
   helpButton.touchStarted(popupHelp); 
-  helpButton.parent('button-container');
+  helpButton.parent('button-container-bottom');
   
   metroImage = createImg('images/metro_icon.jpg', 'tempo');
   metroImage.size(45, 45);
-  metroImage.parent('button-container');
+  metroImage.parent('button-container');  
   
   randomButton = createImg("images/random_button.jpg", "R")
   randomButton.size(45, 45);
   randomButton.touchStarted(randomiseEverything);
-  randomButton.parent('button-container');
+  randomButton.parent('button-container-bottom');  
   
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
@@ -519,19 +511,19 @@ function setup() {
   scalesDropdown.option('Harmonic Minor');
   scalesDropdown.option('Whole Tone');
   scalesDropdown.option('Octatonic');
-  scalesDropdown.parent('button-container');
+  scalesDropdown.parent('button-container-bottom');
 
   scalesDropdown.changed(changeScale);
   instrumentDropdown = createSelect();
   instrumentDropdown.option('Select an Instrument:', '');
   instrumentDropdown.option('organ');
   instrumentDropdown.option('percussion');
-  instrumentDropdown.parent('button-container');
+  instrumentDropdown.parent('button-container-bottom');
   instrumentDropdown.changed(changeInstrument);  
 
   let sliderWrapper = select('.slider-wrapper');
   speedSlider = createSlider(40, 240, 100, 1);
-  speedSlider.parent(sliderWrapper);
+  speedSlider.parent('button-container');
   speedSlider.style('width', '60px');
   speedSliderWidth = speedSlider.width;
   speedSlider.input(updateSpeed);
@@ -542,7 +534,7 @@ function setup() {
   updateSpeed();
   addButton = createImg('images/add_row.jpg', '+');
   addButton.size(45, 45);
-  addButton.parent('button-container');
+  addButton.parent('button-container');  
 
   addButton.touchStarted(() => {
     if (rows < 15) {
@@ -554,7 +546,7 @@ function setup() {
 
   removeButton = createImg('images/minus_row.jpg', '-');
   removeButton.size(45, 45);
-  removeButton.parent('button-container');
+  removeButton.parent('button-container');  
 
   removeButton.touchStarted(() => {
     if (rows > 5) {
