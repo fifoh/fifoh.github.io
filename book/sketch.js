@@ -985,7 +985,7 @@ function popupHelp() {
 
   // Create a div for the help popup
   helpDiv = createDiv();
-  helpDiv.position(50, 50);
+  helpDiv.position(50, 100);
   helpDiv.style('background-color', '#f9f9f9');
   helpDiv.style('border', '1px solid #000');
   helpDiv.style('padding', '10px');
