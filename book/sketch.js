@@ -493,11 +493,6 @@ function setup() {
   metroImage.size(45, 45);
   metroImage.parent('button-container');  
   
-  randomButton = createImg("images/random_button.jpg", "R")
-  randomButton.size(45, 45);
-  randomButton.touchStarted(randomiseEverything);
-  randomButton.parent('button-container');  
-  
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
   scalesDropdown.disable('Select a Scale:', '');
@@ -534,7 +529,7 @@ function setup() {
   updateSpeed();
   addButton = createImg('images/add_row.jpg', '+');
   addButton.size(45, 45);
-  addButton.parent('button-container');  
+  addButton.parent('button-container');    
 
   addButton.touchStarted(() => {
     if (rows < 15) {
@@ -555,6 +550,11 @@ function setup() {
       gridChanged = true;
     }
   });   
+  
+  randomButton = createImg("images/random_button.jpg", "R")
+  randomButton.size(45, 45);
+  randomButton.touchStarted(randomiseEverything);
+  randomButton.parent('button-container');    
   
   touchStarted = touchStarted;
   touchEnded = touchEnded;
