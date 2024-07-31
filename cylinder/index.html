@@ -24,25 +24,25 @@
     /* Back button CSS */
     #back-button {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
+      bottom: 20px; /* Position the button at the bottom */
+      left: 20px; /* Position the button to the left */
+      padding: 10px;
+      font-size: 24px; /* Adjust the size of the symbol */
+      background-color: transparent; /* No background color */
+      color: black; /* Set the text color to black */
       border: none;
-      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: color 0.3s; /* Smooth color transition on hover */
       z-index: 10; /* Ensure it's above other content */
     }
     #back-button:hover {
-      background-color: #0056b3;
+      color: #333; /* Darker shade of black on hover */
     }
   </style>
 </head>
 <body>
-  <!-- Add the back button HTML -->
-  <button id="back-button" onclick="goBack()">Back to Homepage</button>
+  <!-- Add the back button HTML with symbol -->
+  <button id="back-button" onclick="goBack()">⌂</button>
   
   <main>
     <!-- Container for the slider -->
