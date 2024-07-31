@@ -496,7 +496,7 @@ function setup() {
   randomButton = createImg("images/random_button.jpg", "R")
   randomButton.size(45, 45);
   randomButton.touchStarted(randomiseEverything);
-  randomButton.parent('button-container-bottom');  
+  randomButton.parent('button-container');  
   
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
