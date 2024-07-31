@@ -841,7 +841,7 @@ function updateIndividualInstrumentArray(indexToUpdate) {
 
 function randomiseEverything() {
   if (!animate) {  
-    instrumentDropdown.value('Select an Instrument:');
+    instrumentDropdown.value('Instrument:');
     randomTempo = randomInt(60, 240); // int, avoid slowest option
     speedSlider.value(randomTempo);
 
