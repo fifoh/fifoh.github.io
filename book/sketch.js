@@ -494,8 +494,8 @@ function setup() {
   metroImage.parent('button-container');  
   
   scalesDropdown = createSelect();
-  scalesDropdown.option('Select a Scale:', '');
-  scalesDropdown.disable('Select a Scale:', '');
+  scalesDropdown.option('Scale:', '');
+  scalesDropdown.disable('Scale:', '');
   scalesDropdown.option('Major Pentatonic');
   scalesDropdown.option('Minor Pentatonic');
   scalesDropdown.option('Major scale');
@@ -510,7 +510,7 @@ function setup() {
 
   scalesDropdown.changed(changeScale);
   instrumentDropdown = createSelect();
-  instrumentDropdown.option('Select an Instrument:', '');
+  instrumentDropdown.option('Instrument:', '');
   instrumentDropdown.option('organ');
   instrumentDropdown.option('percussion');
   instrumentDropdown.parent('button-container-bottom');
