@@ -449,8 +449,7 @@ function setup() {
   scalesDropdown.changed(changeScale);
 
   instrumentDropdown = createSelect();
-  instrumentDropdown.option("Instrument:");
-  instrumentDropdown.disable("Instrument:");
+  instrumentDropdown.option("Select an Instrument:");
   instrumentDropdown.option("Comb");
   instrumentDropdown.option("Piano");
   instrumentDropdown.option("Bells");
