@@ -10,25 +10,28 @@
       margin: 20px;
       text-align: center;
     }
-    .sketch-link {
+    .sketch-link, .sketch-icon {
       display: inline-block;
       margin: 20px;
       text-align: center;
     }
-    .sketch-link img {
+    .sketch-link img, .sketch-icon img {
       width: 140px;
       height: 140px;
       object-fit: cover;
       border-radius: 10px;
       transition: transform 0.3s;
     }
-    .sketch-link img:hover {
+    .sketch-link img:hover, .sketch-icon img:hover {
       transform: scale(1.05);
     }
   </style>
 </head>
 <body>
   <div>
+    <div class="sketch-icon">
+      <img src="images/home_icon.png" alt="icon">
+    </div>
     <a href="cylinder/index.html" class="sketch-link">
       <img src="images/cylinder.png" alt="cylinder">
     </a>    
