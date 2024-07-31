@@ -10,6 +10,7 @@
     body {
       margin: 0;
       overflow: hidden; /* Prevents scrollbars from appearing */
+      position: relative; /* Ensure relative positioning for the button */
     }
 
     /* CSS to style the slider */
@@ -19,15 +20,43 @@
       margin-left: auto; /* Align slider to the center */
       margin-right: auto;
     }
+
+    /* Back button CSS */
+    #back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      z-index: 10; /* Ensure it's above other content */
+    }
+    #back-button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
+  <!-- Add the back button HTML -->
+  <button id="back-button" onclick="goBack()">Back to Homepage</button>
+  
   <main>
     <!-- Container for the slider -->
     <div class="slider-wrapper">
       <!-- p5.js will insert the slider here -->
     </div>
   </main>
+  
   <script src="sketch.js"></script>
+  
+  <script>
+    function goBack() {
+      window.location.href = "../index.html"; // Adjust this path if necessary
+    }
+  </script>
 </body>
 </html>
