@@ -473,6 +473,7 @@ function setup() {
   playButton.size(45, 45);
   playButton.touchStarted(() => toggleAnimation(totalAnimationTime));
   playButton.parent('button-container');
+  playButton.addClass('fixed-button');
   
   playButton.style('position', 'fixed');
   playButton.style('top', '20px');
