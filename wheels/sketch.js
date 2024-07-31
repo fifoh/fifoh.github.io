@@ -990,7 +990,7 @@ function popupHelp() {
     <div style="position: relative; padding: 10px;">
       <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
         <li>• Press > or < to select a wheel</li>
-        <li>• Click the edge of a wheel to create a pin</li>
+        <li>• Click the edge of the wheel create a pin</li>
         <li>• Click an existing pin to delete it</li>
         <li>• Press + and - to add or remove wheels</li>
         <li>• Press ▶ to play your piece</li>
