@@ -9,6 +9,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset="utf-8" />
+  <style>
+    /* Add minimal styling for the home button */
+    #home-button {
+      position: absolute;
+      bottom: 10px; 
+      right: 60px; 
+      padding: 0px;
+      font-size: 44px; 
+      background-color: transparent; 
+      color: black; 
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s; 
+      z-index: 10; 
+    }
+    #home-button:hover {
+      color: #333; 
+    }
+  </style>
 </head>
 <body>
   <main>
@@ -19,8 +38,16 @@
     <div class="button-wrapper" id="button-container"></div>
 
     <!-- Container for the buttons at the bottom -->
-    <div class="button-wrapper" id="button-container-bottom"></div>
+    <div class="button-wrapper" id="button-container-bottom">
+      <!-- Add the home button here as the last button -->
+      <button id="home-button" onclick="goHome()">⌂</button>
+    </div>
   </main>
   <script src="sketch.js"></script>
+  <script>
+    function goHome() {
+      window.location.href = "../index.html"; // Adjust path as needed
+    }
+  </script>
 </body>
 </html>
