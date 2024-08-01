@@ -1,8 +1,3 @@
-// to do:
-// work on the 'help' button popup
-// test this embedded - does it work?
-// does it work on different mobiles?
-
 p5.disableFriendlyErrors = true;
 let addButton, removeButton;
 let helpButton;
@@ -377,7 +372,7 @@ function setup() {
   
   noScroll();
   
-  // Suspend the AudioContext
+  // Suspend the AudioContext (iphones)
   audioContext.suspend().then(() => {
     console.log('AudioContext suspended in setup:', audioContext.state);
   }).catch((err) => {
@@ -641,7 +636,6 @@ function touchMoved() {
   if (preventNoteCreation) return;
   if (isPlaying) return;
   
-  // Get the current touch position
   let currentTouchY = touches[0].y;
   let currentTouchX = touches[0].x;
   
@@ -654,12 +648,10 @@ function touchMoved() {
       currentTouchY >= rectY && currentTouchY <= rectY + rectHeight) {  
     touchMovedOccurred = true;
     
-    // Calculate the change in the Y position
     if (previousTouchY !== undefined) {
       let deltaY = currentTouchY - previousTouchY;
     }
 
-    // Update previous touch position
     previousTouchY = currentTouchY;
     return false;
   }
@@ -669,7 +661,7 @@ function touchMoved() {
 
 function touchEnded() {
   if (touchMovedOccurred) {
-    touchMovedOccurred = false; // Reset the flag for the next touch event.
+    touchMovedOccurred = false;
     return;
   }
 
@@ -812,10 +804,10 @@ function initializePointsArray() {
 function changeScale() {
   let selectedScale = scalesDropdown.value();
   if (selectedScale !== 'disabled') {
-    if (selectedScale === 'Major Pentatonic') {// pentatonic
+    if (selectedScale === 'Major Pentatonic') {
       scaleMappings = majorPentatonic;
     } 
-    if (selectedScale === 'Minor Pentatonic') {// pentatonic
+    if (selectedScale === 'Minor Pentatonic') {
       scaleMappings = minorPentatonic;
     }     
     if (selectedScale === 'Major scale') {
@@ -915,14 +907,14 @@ function generateRandomPointsArray() {
   clickProximityY = ellipseHeight;
 
   for (let i = 0; i < numEllipses; i++) {
-    let numPoints = Math.floor(random(0, 7)); // Generate a random number of points between 3 and 10
+    let numPoints = Math.floor(random(0, 7)); // Generate a random number of points
     let points = [];
 
     for (let j = 0; j < numPoints; j++) {
       let newAngle = random(TWO_PI); // Generate a random angle between 0 and 2*PI
 
       // Check minimum distance between angles
-      let minDistance = radians(60); // Example: minimum distance of 10 degrees (converted to radians)
+      let minDistance = radians(60); // minimum distance between points
       let canAdd = true;
 
       for (let k = 0; k < points.length; k++) {
@@ -942,14 +934,13 @@ function generateRandomPointsArray() {
     newEllipses.push({ centerX: spacing * i + spacing, points: points });
   }
 
-  ellipses = newEllipses; // Update the global ellipses array with new random points
-  barColors = []; // Reset barColors array or initialize as needed
+  ellipses = newEllipses; 
+  barColors = []; 
   for (let i = 0; i < numEllipses; i++) {
-    barColors[i] = color(0, 60); // Example: initialize barColors array
+    barColors[i] = color(0, 60);
   }
 }
 
-// Function to calculate the difference between two angles in radians
 function angleDifference(angle1, angle2) {
   let diff = angle1 - angle2;
   diff = ((diff + Math.PI) % (2 * Math.PI)) - Math.PI;
@@ -973,10 +964,9 @@ function popupHelp() {
   helpDiv.style('border', '1px solid #000');
   helpDiv.style('padding', '10px');
   helpDiv.style('z-index', '10');
-  helpDiv.style('max-width', '80%'); // Optional, to limit the width
-  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
+  helpDiv.style('max-width', '80%');
+  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif');
 
-  // Add content to the help popup
   helpDiv.html(`
     <div style="position: relative; padding: 10px;">
       <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
@@ -995,18 +985,15 @@ function popupHelp() {
   `);
 
 
-  // Prevent event propagation to the canvas
+  // Prevent clicking on canvas with help
   helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
-
-  // Create a close button inside the help popup
   let closeButton = select('#closeHelp');
   closeButton.mousePressed(closeHelp);
 }
 
 function closeHelp() {
-  // Remove the help popup when the close button is pressed
   if (helpDiv) {
     helpDiv.remove();
   }
