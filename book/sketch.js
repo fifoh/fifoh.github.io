@@ -1,5 +1,3 @@
-// fix randomisation for the percussion and organ
-
 p5.disableFriendlyErrors = true;
 let lastState = '';
 let debounceTimer;
@@ -135,7 +133,6 @@ function loadAudioSet(individualInstrumentArray) {
     );
     bufferLoader.load();
   } else {
-    // If no files need to be loaded, call finishedLoading with an empty array
     finishedLoading([], []);
   }
 }
@@ -963,7 +960,7 @@ function generatePercussionPart() {
   }  
   
   for (let i = 0; i < cols; i++) {
-    // Introduce a probability to skip setting the value in the grid (rests)
+    // skip setting the value in the grid (rests)
     if (random(1) < 0.1) {
       continue;
     }
@@ -978,12 +975,10 @@ function generatePercussionPart() {
 }
 
 function popupHelp() {
-  // Check if the helpDiv already exists, if so, remove it
   if (helpDiv) {
     helpDiv.remove();
   }
 
-  // Create a div for the help popup
   helpDiv = createDiv();
   helpDiv.position(50, 100);
   helpDiv.style('background-color', '#f9f9f9');
@@ -993,7 +988,6 @@ function popupHelp() {
   helpDiv.style('max-width', '80%'); // Optional, to limit the width
   helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
 
-  // Add content to the help popup
   helpDiv.html(`
     <div style="position: relative; padding: 10px;">
       <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
@@ -1011,19 +1005,15 @@ function popupHelp() {
     </div>
   `);
 
-
-  // Prevent event propagation to the canvas
   helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
 
-  // Create a close button inside the help popup
   let closeButton = select('#closeHelp');
   closeButton.mousePressed(closeHelp);
 }
 
 function closeHelp() {
-  // Remove the help popup when the close button is pressed
   if (helpDiv) {
     helpDiv.remove();
   }
