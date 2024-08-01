@@ -411,7 +411,7 @@ function setup() {
   let addButton = createImg("images/plus_ring.jpg", "+");
   addButton.size(45, 45);
   addButton.position(windowWidth - 55 - addButton.width, 30);
-  addButton.mousePressed(() => {
+  addButton.touchStarted(() => {
     if (numRings < 17) {
       numRings++;
       initializePointsArray();
@@ -427,7 +427,7 @@ function setup() {
     windowWidth - 60 - removeButton.width - addButton.width,
     30
   );
-  removeButton.mousePressed(() => {
+  removeButton.touchStarted(() => {
     if (numRings > 6) {
       numRings--;
       initializePointsArray();
@@ -634,14 +634,14 @@ function createPlayButton() {
   playButton = createImg("images/play_icon.jpg", "▶");
   playButton.size(45, 45);
   playButton.position(10, 30);
-  playButton.mousePressed(togglePlayback);
+  playButton.touchStarted(togglePlayback);
 }
 
 function createClearButton() {
   clearButton = createImg("images/bin_icon.jpg", "✖");
   clearButton.size(45, 45);
   clearButton.position(windowWidth - 50, 30);
-  clearButton.mousePressed(() => {
+  clearButton.touchStarted(() => {
     initializePointsArray(true);
     clearInstruments();
   });
@@ -939,7 +939,7 @@ function popupHelp() {
   helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
 
   let closeButton = select('#closeHelp');
-  closeButton.mousePressed(closeHelp);
+  closeButton.touchStarted(closeHelp);
 }
 
 function closeHelp() {
