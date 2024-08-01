@@ -1,3 +1,5 @@
+// fix randomisation for the percussion and organ
+
 p5.disableFriendlyErrors = true;
 let lastState = '';
 let debounceTimer;
@@ -133,6 +135,7 @@ function loadAudioSet(individualInstrumentArray) {
     );
     bufferLoader.load();
   } else {
+    // If no files need to be loaded, call finishedLoading with an empty array
     finishedLoading([], []);
   }
 }
@@ -491,8 +494,8 @@ function setup() {
   metroImage.parent('button-container');  
   
   scalesDropdown = createSelect();
-  scalesDropdown.option('Scale:', '');
-  scalesDropdown.disable('Scale:', '');
+  scalesDropdown.option('Select a Scale:', '');
+  scalesDropdown.disable('Select a Scale:', '');
   scalesDropdown.option('Major Pentatonic');
   scalesDropdown.option('Minor Pentatonic');
   scalesDropdown.option('Major scale');
@@ -507,7 +510,7 @@ function setup() {
 
   scalesDropdown.changed(changeScale);
   instrumentDropdown = createSelect();
-  instrumentDropdown.option('Instrument:', '');
+  instrumentDropdown.option('Select an Instrument:', '');
   instrumentDropdown.option('organ');
   instrumentDropdown.option('percussion');
   instrumentDropdown.parent('button-container-bottom');
@@ -683,6 +686,7 @@ function updateSpeed() {
 function toggleAnimation() {
   animate = !animate;
   if (animate) {
+    scrollToStart(); // Scroll to the start when animation begins
     randomButton.attribute('src', 'images/random_button_disabled.jpg');
     playButton.hide();
     stopButton.show();
@@ -838,7 +842,7 @@ function updateIndividualInstrumentArray(indexToUpdate) {
 
 function randomiseEverything() {
   if (!animate) {  
-    instrumentDropdown.value('Instrument:');
+    instrumentDropdown.value('Select an Instrument:');
     randomTempo = randomInt(60, 240); // int, avoid slowest option
     speedSlider.value(randomTempo);
 
@@ -960,7 +964,7 @@ function generatePercussionPart() {
   }  
   
   for (let i = 0; i < cols; i++) {
-    // skip setting the value in the grid (rests)
+    // Introduce a probability to skip setting the value in the grid (rests)
     if (random(1) < 0.1) {
       continue;
     }
@@ -1005,6 +1009,7 @@ function popupHelp() {
     </div>
   `);
 
+
   helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
@@ -1017,4 +1022,10 @@ function closeHelp() {
   if (helpDiv) {
     helpDiv.remove();
   }
+}
+
+function scrollToStart() {
+  window.scrollTo({
+    left: 0,
+  });
 }
