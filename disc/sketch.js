@@ -904,22 +904,19 @@ function createRandomPoints(numPoints) {
 }
 
 function popupHelp() {
-  // Check if the helpDiv already exists, if so, remove it
   if (helpDiv) {
     helpDiv.remove();
   }
 
-  // Create a div for the help popup
   helpDiv = createDiv();
   helpDiv.position(50, 50);
   helpDiv.style('background-color', '#f9f9f9');
   helpDiv.style('border', '1px solid #000');
   helpDiv.style('padding', '10px');
   helpDiv.style('z-index', '10');
-  helpDiv.style('max-width', '80%'); // Optional, to limit the width
-  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif'); // Set the font
+  helpDiv.style('max-width', '80%');
+  helpDiv.style('font-family', 'Arial, Helvetica, sans-serif');
 
-  // Add content to the help popup
   helpDiv.html(`
     <div style="position: relative; padding: 10px;">
       <ul style="margin: 0; padding: 0; list-style: none; line-height: 1.8;">
@@ -937,19 +934,15 @@ function popupHelp() {
     </div>
   `);
 
-
-  // Prevent event propagation to the canvas
   helpDiv.elt.addEventListener('touchstart', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchmove', (e) => e.stopPropagation());
   helpDiv.elt.addEventListener('touchend', (e) => e.stopPropagation());
 
-  // Create a close button inside the help popup
   let closeButton = select('#closeHelp');
   closeButton.mousePressed(closeHelp);
 }
 
 function closeHelp() {
-  // Remove the help popup when the close button is pressed
   if (helpDiv) {
     helpDiv.remove();
   }
